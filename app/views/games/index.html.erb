@@ -1,0 +1,53 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Games</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Cover</th>
+      <th>Description</th>
+      <th>Reglas PDF</th>
+      <th colspan="2">Piezas del juego</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @games.each do |game| %>
+      <tr>
+        <td><%= game.name %></td>
+        <td>
+          <% if game.cover.attached?%>
+            <td><%= image_tag game.cover.variant(resize: "100x100", colorspace: "gray") %><%= link_to "-->", rails_blob_path(game.cover, disposition: "attachment") %></td>
+          <% end %>        
+        <td><%= game.description %></td>
+        <td>
+          <% if game.rule.attached?%>
+            <%= image_tag game.rule.preview(resize: "100x100", colorspace: "gray")%><%= link_to "-->", rails_blob_path(game.rule, disposition: "attachment") %>
+          <% end %>
+        </td>
+        <td>
+          <ul>
+            <% game.pieces.each do |piece| %>
+              <% if piece.variable? %>
+                <li><%= image_tag piece.variant(resize: "100x100", colorspace: "gray") %> <%= link_to "-->", rails_blob_path(piece, disposition: "attachment") %></li>
+              <% elsif piece.previewable? %>
+                <li><%= image_tag piece.preview(resize: "100x100", colorspace: "gray") %> <%= link_to "-->", rails_blob_path(piece, disposition: "attachment") %></li>
+              <% end %>
+            <% end %>
+          </ul>
+        </td>
+
+        <td><%= link_to 'Show', game %></td>
+        <td><%= link_to 'Edit', edit_game_path(game) %></td>
+        <td><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Game', new_game_path %>

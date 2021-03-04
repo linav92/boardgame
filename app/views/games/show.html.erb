@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @game.name %>
+</p>
+
+<p>
+  <strong>Portada:</strong> <br>
+  <%= image_tag @game.cover.variant(resize: "100x100", colorspace: "gray")%>
+</p>
+
+<p>
+  <strong>Reglas:</strong>
+  <%= @game.description %>
+</p>
+
+<p>
+  <strong>Reglas en PDF</strong> <br>
+  <%= image_tag @game.rule.preview(resize: "100x100", colorspace: "gray")%>
+</p>
+
+<p>
+  <strong>Piezas del juego:</strong>
+  <ul>
+      <% @game.pieces.each do |piece| %>
+        <% if piece.variable? %>
+          <li><%= image_tag piece.variant(resize: "100x100", colorspace: "gray").processed %> </li>
+        <% elsif piece.previewable? %>
+          <li><%= image_tag piece.preview(resize: "100x100", colorspace: "gray").processed %> </li>
+        <% end %>
+      <% end %>
+    </ul>
+</p>
+
+<%= link_to 'Edit', edit_game_path(@game) %> |
+<%= link_to 'Back', games_path %>
